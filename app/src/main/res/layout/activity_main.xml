@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity" android:id="@+id/mainLayout"
+        android:weightSum="10" android:orientation="vertical">
+    <TextView
+            android:text="Off"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/shutterUpText"
+            android:textSize="18sp"
+            android:textStyle="bold" android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="@+id/iconSplit" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/manualControlText" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/manualIcon" android:textAllCaps="true"
+            app:layout_constraintEnd_toEndOf="@+id/ShutterUpText"/>
+    <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/manualSwitch"
+            android:switchMinWidth="100dp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/shutterUpText"
+            app:layout_constraintStart_toStartOf="@+id/shutterSwitch"
+            app:layout_constraintEnd_toEndOf="@+id/shutterSwitch"/>
+    <TextView
+            android:text="Manual Control"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/manualControlText" app:layout_constraintStart_toEndOf="@+id/shutterIcon"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" android:textSize="20sp" android:textStyle="bold"
+            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintTop_toTopOf="@+id/manualIcon"/>
+    <android.support.constraint.Guideline
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/iconSplit"
+            app:layout_constraintGuide_percent="0.29927006"/>
+    <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp" app:srcCompat="@drawable/thermo"
+            android:id="@+id/temperatureIcon" app:layout_constraintEnd_toStartOf="@+id/iconSplit"
+            android:layout_marginEnd="8dp" android:layout_marginTop="16dp" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
+            android:minHeight="100dp" app:layout_constraintBottom_toTopOf="@+id/guideline2"
+            android:layout_marginBottom="8dp"/>
+    <TextView
+            android:text="25.5 C"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:id="@+id/temperatureTextView" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toStartOf="@+id/iconSplit" android:layout_marginStart="8dp"
+            android:textSize="28sp" android:textAlignment="textStart"
+            android:textStyle="bold|italic" android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="@+id/temperatureIcon" android:gravity="center"
+            app:layout_constraintTop_toTopOf="@+id/temperatureIcon"/>
+    <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp" app:srcCompat="@drawable/pallette"
+            android:id="@+id/lightIcon"
+            app:layout_constraintEnd_toStartOf="@+id/iconSplit" android:layout_marginEnd="8dp"
+            android:minHeight="150dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="@+id/guideline3"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/guideline4"
+            app:layout_constraintStart_toStartOf="@+id/outsideLightIcon"/>
+    <TextView
+            android:text="R"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/RIndicator" app:layout_constraintStart_toStartOf="@+id/iconSplit"
+            android:layout_marginStart="8dp"
+            app:layout_constraintTop_toTopOf="@+id/lightIcon" android:textSize="18sp" android:textStyle="bold"/>
+    <SeekBar
+            android:max="255"
+            android:min="0"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/Rslider" app:layout_constraintStart_toEndOf="@+id/RIndicator"
+            android:layout_marginStart="8dp"
+            app:layout_constraintTop_toTopOf="@+id/RIndicator" style="@style/Widget.AppCompat.SeekBar"
+            app:layout_constraintEnd_toStartOf="@+id/RvalueTextView" android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/RIndicator"/>
+    <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/RvalueTextView"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="24dp" android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/RIndicator"/>
+    <TextView
+            android:text="G"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/GIndicator"
+            android:textSize="18sp" android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/RIndicator" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/RIndicator"/>
+    <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/GTextView"
+            app:layout_constraintBaseline_toBaselineOf="@+id/GIndicator" android:textSize="18sp"
+            android:textStyle="bold" app:layout_constraintEnd_toEndOf="@+id/RvalueTextView"
+    />
+    <SeekBar
+            android:max="255"
+            android:min="0"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/Gslider" app:layout_constraintEnd_toStartOf="@+id/GTextView"
+            android:layout_marginEnd="8dp" app:layout_constraintStart_toEndOf="@+id/GIndicator"
+            android:layout_marginStart="8dp"
+            app:layout_constraintTop_toTopOf="@+id/GIndicator"/>
+    <SeekBar
+            android:max="255"
+            android:min="0"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/Bslider" app:layout_constraintStart_toEndOf="@+id/BIndicator"
+            android:layout_marginStart="8dp"
+            app:layout_constraintTop_toTopOf="@+id/BIndicator" app:layout_constraintEnd_toStartOf="@+id/Bvalue"
+            android:layout_marginEnd="8dp"/>
+    <TextView
+            android:text="B"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/BIndicator" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/GIndicator"
+            app:layout_constraintStart_toStartOf="@+id/GIndicator" android:textSize="18sp" android:textStyle="bold"/>
+    <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Bvalue"
+            app:layout_constraintBaseline_toBaselineOf="@+id/BIndicator" android:textStyle="bold"
+            android:textSize="18sp" app:layout_constraintEnd_toEndOf="@+id/GTextView"/>
+    <TextView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/colorResult"
+            android:minHeight="50dp"
+            app:layout_constraintStart_toStartOf="@+id/BIndicator"
+            app:layout_constraintBottom_toTopOf="@+id/guideline4"
+            app:layout_constraintEnd_toEndOf="@+id/Bvalue" android:background="@android:color/black"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/Bslider"
+            android:layout_marginBottom="8dp"/>
+    <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp" app:srcCompat="@drawable/window"
+            app:layout_constraintStart_toStartOf="@+id/lightIcon" app:layout_constraintEnd_toStartOf="@+id/iconSplit"
+            android:layout_marginEnd="8dp"
+            android:id="@+id/shutterIcon" android:minHeight="100dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="@+id/guideline4"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/guideline5"/>
+    <TextView
+            android:text="Shutter Control"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/shutterTextView" app:layout_constraintStart_toEndOf="@+id/shutterIcon"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" android:textSize="20sp" android:textStyle="bold"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="@+id/shutterIcon"/>
+    <TextView
+            android:text="UP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ShutterUpText" app:layout_constraintStart_toStartOf="@+id/iconSplit"
+            android:layout_marginStart="16dp" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/shutterIcon" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/shutterTextView" android:textSize="18sp"
+            android:textStyle="bold"/>
+    <TextView
+            android:text="Down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/shutterDownText"
+            app:layout_constraintBaseline_toBaselineOf="@+id/ShutterUpText"
+            android:textSize="18sp" android:textStyle="bold"
+            android:textAllCaps="true" app:layout_constraintEnd_toEndOf="@+id/colorResult"
+    />
+    <TextView
+            android:text="On"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/manualOnText"
+            android:textSize="18sp" android:textStyle="bold"
+            android:textAllCaps="true"
+            app:layout_constraintTop_toTopOf="@+id/shutterUpText"
+            app:layout_constraintStart_toStartOf="@+id/shutterDownText"
+            app:layout_constraintEnd_toEndOf="@+id/shutterDownText"/>
+    <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/shutterSwitch" app:layout_constraintStart_toEndOf="@+id/ShutterUpText"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toStartOf="@+id/shutterDownText"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintTop_toTopOf="@+id/ShutterUpText" android:switchMinWidth="100dp"/>
+    <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp" app:srcCompat="@drawable/hand"
+            android:id="@+id/manualIcon"
+            app:layout_constraintEnd_toStartOf="@+id/iconSplit" android:layout_marginEnd="8dp"
+            android:minHeight="100dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="@+id/guideline5" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline6"
+            app:layout_constraintStart_toStartOf="@+id/shutterIcon"/>
+    <Button
+            android:text="Apply changes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/applyButton"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:textStyle="bold" android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="@+id/guideline6"
+            android:layout_marginStart="24dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginEnd="24dp" app:layout_constraintEnd_toEndOf="parent"/>
+    <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp" app:srcCompat="@drawable/sun"
+            android:id="@+id/outsideLightIcon"
+            app:layout_constraintEnd_toStartOf="@+id/iconSplit"
+            android:layout_marginEnd="8dp" android:minHeight="100dp" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="@+id/guideline2" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="@+id/temperatureIcon"/>
+    <TextView
+            android:text="Coś ze światłem na zewnątrz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/outsideLightText"
+            app:layout_constraintTop_toTopOf="@+id/outsideLightIcon"
+            app:layout_constraintBottom_toBottomOf="@+id/outsideLightIcon"
+            app:layout_constraintStart_toStartOf="@+id/iconSplit" android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"/>
+    <android.support.constraint.Guideline
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/guideline2"
+            app:layout_constraintGuide_percent="0.17"/>
+    <android.support.constraint.Guideline
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/guideline3"
+            app:layout_constraintGuide_percent="0.34"/>
+    <android.support.constraint.Guideline
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/guideline4"
+            app:layout_constraintGuide_percent="0.58"/>
+    <android.support.constraint.Guideline
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/guideline5"
+            app:layout_constraintGuide_percent="0.74"/>
+    <android.support.constraint.Guideline
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/guideline6"
+            app:layout_constraintGuide_percent="0.9"/>
+</android.support.constraint.ConstraintLayout>
