@@ -7,25 +7,37 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity" android:id="@+id/mainLayout"
         android:weightSum="10" android:orientation="vertical">
+    <SeekBar
+            android:max="255"
+            android:min="0"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/shutterSlider"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/shutterPositionText" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline5" android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/ShutterUpText"
+            app:layout_constraintStart_toEndOf="@+id/shutterDownText" android:layout_marginStart="8dp"/>
     <TextView
             android:text="Off"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/shutterUpText"
+            android:id="@+id/manualControlOffText"
             android:textSize="18sp"
             android:textStyle="bold" android:layout_marginStart="8dp"
             app:layout_constraintStart_toStartOf="@+id/iconSplit" android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@+id/manualControlText" android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/manualIcon" android:textAllCaps="true"
-            app:layout_constraintEnd_toEndOf="@+id/ShutterUpText"/>
+            app:layout_constraintEnd_toEndOf="@+id/ShutterUpText"
+            app:layout_constraintHorizontal_bias="1.0"/>
     <Switch
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/manualSwitch"
             android:switchMinWidth="100dp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/shutterUpText"
-            app:layout_constraintStart_toStartOf="@+id/shutterSwitch"
-            app:layout_constraintEnd_toEndOf="@+id/shutterSwitch"/>
+            app:layout_constraintBaseline_toBaselineOf="@+id/manualControlOffText"
+            app:layout_constraintEnd_toStartOf="@+id/manualControlOffText" android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toEndOf="@+id/manualOnText" android:layout_marginStart="8dp"/>
     <TextView
             android:text="Manual Control"
             android:layout_width="wrap_content"
@@ -44,13 +56,14 @@
     <ImageView
             android:layout_width="0dp"
             android:layout_height="0dp" app:srcCompat="@drawable/thermo"
-            android:id="@+id/temperatureIcon" app:layout_constraintEnd_toStartOf="@+id/iconSplit"
-            android:layout_marginEnd="8dp" android:layout_marginTop="16dp" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
-            android:minHeight="100dp" app:layout_constraintBottom_toTopOf="@+id/guideline2"
-            android:layout_marginBottom="8dp"/>
+            android:id="@+id/temperatureIcon"
+            android:minHeight="100dp"
+            app:layout_constraintTop_toTopOf="@+id/guideline2"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toStartOf="@+id/iconSplit"
+            android:layout_marginEnd="8dp" android:layout_marginStart="8dp" android:layout_marginTop="8dp"/>
     <TextView
-            android:text="25.5 C"
+            android:text="waiting for server"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:id="@+id/temperatureTextView" app:layout_constraintEnd_toEndOf="parent"
@@ -68,7 +81,7 @@
             android:minHeight="150dp"
             android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="@+id/guideline3"
             android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/guideline4"
-            app:layout_constraintStart_toStartOf="@+id/outsideLightIcon"/>
+            app:layout_constraintStart_toStartOf="@+id/temperatureIcon"/>
     <TextView
             android:text="R"
             android:layout_width="wrap_content"
@@ -144,14 +157,13 @@
             android:textSize="18sp" app:layout_constraintEnd_toEndOf="@+id/GTextView"/>
     <TextView
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="30dp"
             android:id="@+id/colorResult"
             android:minHeight="50dp"
             app:layout_constraintStart_toStartOf="@+id/BIndicator"
-            app:layout_constraintBottom_toTopOf="@+id/guideline4"
             app:layout_constraintEnd_toEndOf="@+id/Bvalue" android:background="@android:color/black"
             android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/Bslider"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/guideline4"/>
     <ImageView
             android:layout_width="0dp"
             android:layout_height="0dp" app:srcCompat="@drawable/window"
@@ -161,10 +173,10 @@
             android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="@+id/guideline4"
             android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/guideline5"/>
     <TextView
-            android:text="Shutter Control"
+            android:text="waiting for server"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/shutterTextView" app:layout_constraintStart_toEndOf="@+id/shutterIcon"
+            android:id="@+id/shutterPositionText" app:layout_constraintStart_toEndOf="@+id/shutterIcon"
             android:layout_marginStart="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="8dp" android:textSize="20sp" android:textStyle="bold"
@@ -173,20 +185,24 @@
             android:text="UP"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/ShutterUpText" app:layout_constraintStart_toStartOf="@+id/iconSplit"
-            android:layout_marginStart="16dp" android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/shutterIcon" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/shutterTextView" android:textSize="18sp"
-            android:textStyle="bold"/>
+            android:id="@+id/ShutterUpText"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/colorResult"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/guideline5"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/shutterPositionText"/>
     <TextView
             android:text="Down"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/shutterDownText"
-            app:layout_constraintBaseline_toBaselineOf="@+id/ShutterUpText"
             android:textSize="18sp" android:textStyle="bold"
-            android:textAllCaps="true" app:layout_constraintEnd_toEndOf="@+id/colorResult"
-    />
+            android:textAllCaps="true"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="@+id/colorResult"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/shutterPositionText" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline5"/>
     <TextView
             android:text="On"
             android:layout_width="wrap_content"
@@ -194,16 +210,9 @@
             android:id="@+id/manualOnText"
             android:textSize="18sp" android:textStyle="bold"
             android:textAllCaps="true"
-            app:layout_constraintTop_toTopOf="@+id/shutterUpText"
+            app:layout_constraintTop_toTopOf="@+id/manualControlOffText"
             app:layout_constraintStart_toStartOf="@+id/shutterDownText"
-            app:layout_constraintEnd_toEndOf="@+id/shutterDownText"/>
-    <Switch
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/shutterSwitch" app:layout_constraintStart_toEndOf="@+id/ShutterUpText"
-            android:layout_marginStart="8dp" app:layout_constraintEnd_toStartOf="@+id/shutterDownText"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintTop_toTopOf="@+id/ShutterUpText" android:switchMinWidth="100dp"/>
+            app:layout_constraintEnd_toEndOf="@+id/shutterDownText" app:layout_constraintHorizontal_bias="0.0"/>
     <ImageView
             android:layout_width="0dp"
             android:layout_height="0dp" app:srcCompat="@drawable/hand"
@@ -224,47 +233,29 @@
             android:textStyle="bold" android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="@+id/guideline6"
             android:layout_marginStart="24dp" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginEnd="24dp" app:layout_constraintEnd_toEndOf="parent"/>
-    <ImageView
-            android:layout_width="0dp"
-            android:layout_height="0dp" app:srcCompat="@drawable/sun"
-            android:id="@+id/outsideLightIcon"
-            app:layout_constraintEnd_toStartOf="@+id/iconSplit"
-            android:layout_marginEnd="8dp" android:minHeight="100dp" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toTopOf="@+id/guideline2" android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/guideline3"
-            app:layout_constraintStart_toStartOf="@+id/temperatureIcon"/>
-    <TextView
-            android:text="Coś ze światłem na zewnątrz"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/outsideLightText"
-            app:layout_constraintTop_toTopOf="@+id/outsideLightIcon"
-            app:layout_constraintBottom_toBottomOf="@+id/outsideLightIcon"
-            app:layout_constraintStart_toStartOf="@+id/iconSplit" android:layout_marginStart="8dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"/>
     <android.support.constraint.Guideline
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/guideline2"
-            app:layout_constraintGuide_percent="0.17"/>
+            app:layout_constraintGuide_percent="0.05"/>
     <android.support.constraint.Guideline
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/guideline3"
-            app:layout_constraintGuide_percent="0.34"/>
+            app:layout_constraintGuide_percent="0.22"/>
     <android.support.constraint.Guideline
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/guideline4"
-            app:layout_constraintGuide_percent="0.58"/>
+            app:layout_constraintGuide_percent="0.48"/>
     <android.support.constraint.Guideline
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/guideline5"
-            app:layout_constraintGuide_percent="0.74"/>
+            app:layout_constraintGuide_percent="0.66"/>
     <android.support.constraint.Guideline
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/guideline6"
-            app:layout_constraintGuide_percent="0.9"/>
+            app:layout_constraintGuide_percent="0.84"/>
 </android.support.constraint.ConstraintLayout>

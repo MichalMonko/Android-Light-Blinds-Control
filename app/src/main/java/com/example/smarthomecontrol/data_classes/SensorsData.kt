@@ -11,11 +11,10 @@ object SensorsDataJsonParser {
             val green = getInt("green")
             val blue = getInt("blue")
             val temperature = getDouble("temperature")
-            val shutterState = getInt("shutterState")
-            val shutterUp = shutterState == 1
+            val shutterPosition = getInt("shutterPosition")
             return SensorsData(
                 temperature, red, green, blue,
-                shutterUp)
+                shutterPosition)
         }
     }
 }
@@ -25,5 +24,5 @@ data class SensorsData(
     val R: Int,
     val G: Int,
     val B: Int,
-    val shutterUp: Boolean
+    val shutterProgress: Int
 )

@@ -1,7 +1,5 @@
 package com.example.smarthomecontrol.networking
 
-import com.example.smarthomecontrol.data_classes.SensorsData
-
 
 enum class RequestType {
     GET, POST

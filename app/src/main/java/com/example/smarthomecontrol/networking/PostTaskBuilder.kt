@@ -11,7 +11,7 @@ private const val TAG = "POST_TASK"
 
 class PostTask(val url: URL, val data: PostData) {
 
-    fun handlePostResult(result: RESULT): Unit {
+    fun handlePostResult(result: RESULT) {
         RequestExecutor.handlePostResult(result)
     }
 }
@@ -46,7 +46,6 @@ class PostTaskRunnable(private val postTask: PostTask) : Runnable {
 class PostTaskBuilder {
     private lateinit var url: URL
     private lateinit var postData: PostData
-    private lateinit var executor: RequestExecutor
 
 
     fun withURL(to: URL): PostTaskBuilder {

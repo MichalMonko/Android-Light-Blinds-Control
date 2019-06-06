@@ -1,7 +1,7 @@
 package com.example.smarthomecontrol
 
+import android.annotation.SuppressLint
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity(), RequestReceiver {
 
     private lateinit var colorResult: TextView
 
-    private lateinit var shutterControlSwitch: Switch
+    private lateinit var shutterControlSlider: SeekBar
     private lateinit var manualControlSwitch: Switch
     private lateinit var applyButton: Button
 
@@ -40,28 +40,34 @@ class MainActivity : AppCompatActivity(), RequestReceiver {
     private val getUrl: URL = URL("http://192.168.1.234:8000/data/stateData")
     private val postUrl: URL = URL("http://192.168.1.234:8000/data/stateData")
 
-    var isShutterDown = false
-
-    private inner class ColorChangeListener : SeekBar.OnSeekBarChangeListener {
+    private inner class SliderChangeListener : SeekBar.OnSeekBarChangeListener {
         override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
             Log.d(TAG, "onProgressChanged called")
             val textView = when (seekBar) {
                 Rslider -> Rvalue
                 Gslider -> Gvalue
                 Bslider -> Bvalue
+                shutterControlSlider -> shutterPositionText
                 else -> throw IllegalArgumentException("Undefined Seekbar passed to change listener")
             }
             textView.text = progress.toString()
 
-            var Rhex = Rslider.progress.toString(16)
-            if (Rhex.length < 2) Rhex = "0$Rhex"
-            var Ghex = Gslider.progress.toString(16)
-            if (Ghex.length < 2) Ghex = "0$Ghex"
-            var Bhex = Bslider.progress.toString(16)
-            if (Bhex.length < 2) Bhex = "0$Bhex"
+            if (seekBar in listOf(Rslider, Gslider, Bslider)) {
 
-            val newColor = "#$Rhex$Ghex$Bhex"
-            colorResult.setBackgroundColor(Color.parseColor(newColor))
+                var Rhex = Rslider.progress.toString(16)
+                if (Rhex.length < 2) Rhex = "0$Rhex"
+                var Ghex = Gslider.progress.toString(16)
+                if (Ghex.length < 2) Ghex = "0$Ghex"
+                var Bhex = Bslider.progress.toString(16)
+                if (Bhex.length < 2) Bhex = "0$Bhex"
+
+                val newColor = "#$Rhex$Ghex$Bhex"
+                colorResult.setBackgroundColor(Color.parseColor(newColor))
+            }
+            else
+            {
+                textView.append(" %")
+            }
             Log.d(TAG, "onProgressChanged ended")
         }
 
@@ -84,7 +90,7 @@ class MainActivity : AppCompatActivity(), RequestReceiver {
 
         colorResult = findViewById(R.id.colorResult)
 
-        val sliderListener = ColorChangeListener()
+        val sliderListener = SliderChangeListener()
         Rslider.setOnSeekBarChangeListener(sliderListener)
         Gslider.setOnSeekBarChangeListener(sliderListener)
         Bslider.setOnSeekBarChangeListener(sliderListener)
@@ -93,16 +99,16 @@ class MainActivity : AppCompatActivity(), RequestReceiver {
         Gvalue = findViewById(R.id.GTextView)
         Bvalue = findViewById(R.id.Bvalue)
 
-        shutterControlSwitch = findViewById(R.id.shutterSwitch)
+        shutterControlSlider = findViewById(R.id.shutterSlider)
         manualControlSwitch = findViewById(R.id.manualSwitch)
-
-        shutterControlSwitch.setOnCheckedChangeListener { _, isChecked ->
-            isShutterDown = isChecked
-        }
 
         manualControlSwitch.setOnCheckedChangeListener { _, isChecked ->
             enableManualControl(isChecked)
         }
+
+
+        shutterControlSlider.setOnSeekBarChangeListener(sliderListener)
+        shutterControlSlider.max = 100
 
         applyButton = findViewById(R.id.applyButton)
         applyButton.setOnClickListener {
@@ -131,6 +137,7 @@ class MainActivity : AppCompatActivity(), RequestReceiver {
         return SensorsDataJsonParser.parse(data)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun applyChanges(sensorData: SensorsData) {
         Log.d(TAG, "applyChanges() started")
         if (!manualControl) {
@@ -145,9 +152,12 @@ class MainActivity : AppCompatActivity(), RequestReceiver {
             Rvalue.text = sensorData.R.toString()
             Gvalue.text = sensorData.G.toString()
             Bvalue.text = sensorData.B.toString()
-            shutterControlSwitch.isChecked = !sensorData.shutterUp
+            shutterControlSlider.progress = sensorData.shutterProgress
+            shutterControlSlider.refreshDrawableState()
+            shutterPositionText.text = "${sensorData.shutterProgress} %"
         }
         temperatureTextView.text = sensorData.temperature.toString()
+
         Log.d(TAG, "applyChanges() ended")
     }
 
@@ -172,7 +182,7 @@ class MainActivity : AppCompatActivity(), RequestReceiver {
         Rslider.isEnabled = enabled
         Gslider.isEnabled = enabled
         Bslider.isEnabled = enabled
-        shutterControlSwitch.isEnabled = enabled
+        shutterControlSlider.isEnabled = enabled
         applyButton.isEnabled = enabled
         if (enabled != manualControl) {
             manualControl = enabled
@@ -192,7 +202,7 @@ class MainActivity : AppCompatActivity(), RequestReceiver {
             Rslider.progress,
             Gslider.progress,
             Bslider.progress,
-            shutterControlSwitch.verticalScrollbarPosition,
+            shutterControlSlider.progress,
             manualControl
         )
         sendPostRequest(postUrl, data)
