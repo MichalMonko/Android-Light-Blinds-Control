@@ -1,23 +1,33 @@
 package com.example.smarthomecontrol
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.preference.PreferenceManager
+import android.support.v4.app.ActivityCompat
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.*
 import com.example.smarthomecontrol.data_classes.PostData
 import com.example.smarthomecontrol.data_classes.SensorsData
 import com.example.smarthomecontrol.data_classes.SensorsDataJsonParser
 import com.example.smarthomecontrol.networking.ErrorType
 import com.example.smarthomecontrol.networking.RequestExecutor
+import com.example.smarthomecontrol.networking.RequestExecutor.sendGetRequest
 import com.example.smarthomecontrol.networking.RequestExecutor.sendPostRequest
 import com.example.smarthomecontrol.networking.RequestReceiver
 import com.example.smarthomecontrol.networking.RequestType
 import kotlinx.android.synthetic.main.activity_main.*
+import java.net.MalformedURLException
 import java.net.URL
 
 const val DELAY_SECONDS = 10L
+const val SET_HOST_IP_CODE = 100
+const val HOST_IP_KEY = "HostIP"
 const val TAG = "MAIN_ACTIVITY"
 
 class MainActivity : AppCompatActivity(), RequestReceiver {
@@ -37,8 +47,11 @@ class MainActivity : AppCompatActivity(), RequestReceiver {
 
     private var manualControl = false
 
-    private val getUrl: URL = URL("http://192.168.1.234:8000/data/stateData")
-    private val postUrl: URL = URL("http://192.168.1.234:8000/data/stateData")
+    private var host = "http://192.168.1.234:8000"
+    private var apiRoute = "/data/stateData"
+
+    private var getUrl: URL = URL("http://192.168.1.234:8000/data/stateData")
+    private var postUrl: URL = URL("http://192.168.1.234:8000/data/stateData")
 
     private inner class SliderChangeListener : SeekBar.OnSeekBarChangeListener {
         override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -63,9 +76,7 @@ class MainActivity : AppCompatActivity(), RequestReceiver {
 
                 val newColor = "#$Rhex$Ghex$Bhex"
                 colorResult.setBackgroundColor(Color.parseColor(newColor))
-            }
-            else
-            {
+            } else {
                 textView.append(" %")
             }
             Log.d(TAG, "onProgressChanged ended")
@@ -83,6 +94,14 @@ class MainActivity : AppCompatActivity(), RequestReceiver {
         Log.d(TAG, "onCreate called")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val savedHost = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+            .getString(HOST_IP_KEY, null)
+
+        savedHost?.let {
+            updateUrl(savedHost)
+        }
+
 
         Rslider = findViewById(R.id.Rslider)
         Gslider = findViewById(R.id.Gslider)
@@ -122,12 +141,30 @@ class MainActivity : AppCompatActivity(), RequestReceiver {
         Log.d(TAG, "onCreate ended")
     }
 
+    private fun updateUrl(host: String) {
+        try {
+            this.host = host
+            val newGetUrl = URL("$host$apiRoute")
+            val newPostUrl = URL("$host$apiRoute")
+
+            getUrl = newGetUrl
+            postUrl = newPostUrl
+
+            PreferenceManager
+                .getDefaultSharedPreferences(applicationContext)
+                .edit()
+                .putString(HOST_IP_KEY, host)
+                .apply()
+        } catch (ex: MalformedURLException) {
+            Toast.makeText(this, "Provided URL is invalid no changes were made", Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
     override fun onSuccess(requestType: RequestType, data: String?) {
         Log.d(TAG, "onSuccess started")
         when (requestType) {
             RequestType.GET -> data?.let { applyChanges(parseData(data)) }
-            RequestType.POST -> Toast.makeText(this, "Data sent successfully", Toast.LENGTH_LONG).show()
         }
         Log.d(TAG, "onSuccess ended")
     }
@@ -156,9 +193,38 @@ class MainActivity : AppCompatActivity(), RequestReceiver {
             shutterControlSlider.refreshDrawableState()
             shutterPositionText.text = "${sensorData.shutterProgress} %"
         }
-        temperatureTextView.text = sensorData.temperature.toString()
+        temperatureTextView.text = "${sensorData.temperature} \u00B0C"
 
         Log.d(TAG, "applyChanges() ended")
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.settingsButton -> {
+                val intent = Intent(this,SettingsActivity::class.java)
+                intent.putExtra(HOST_IP_KEY, host)
+                startActivityForResult(intent, SET_HOST_IP_CODE)
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                SET_HOST_IP_CODE -> {
+                    host = data.getStringExtra(HOST_IP_KEY)
+                    updateUrl(host)
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onError(requestType: RequestType, error: ErrorType) {
@@ -168,11 +234,13 @@ class MainActivity : AppCompatActivity(), RequestReceiver {
             RequestType.POST -> "Cannot send data to server : "
         }
         val errorPrompt = when (error) {
-            ErrorType.CONNECTION_ERROR -> "Cannot connect to server"
+            ErrorType.CONNECTION_ERROR -> "Connection Error"
             ErrorType.OTHER_ERROR -> "Other error occurred"
         }
 
-        Toast.makeText(this, infoPrompt + errorPrompt, Toast.LENGTH_LONG).show()
+        shutterPositionText.text = errorPrompt
+        temperatureTextView.text = errorPrompt
+        //Toast.makeText(this, infoPrompt + errorPrompt, Toast.LENGTH_LONG).show()
         Log.d(TAG, "onError() ended")
     }
 
