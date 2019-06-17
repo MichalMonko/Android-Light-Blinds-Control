@@ -1,5 +1,6 @@
 package com.example.smarthomecontrol
 
+import android.app.Activity
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -27,4 +28,12 @@ class SettingsActivity : AppCompatActivity() {
             finish()
         }
     }
+
+    override fun onBackPressed() {
+        val returnIntent = Intent()
+        setResult(Activity.RESULT_CANCELED,returnIntent)
+        finish()
+        super.onBackPressed()
+    }
+
 }

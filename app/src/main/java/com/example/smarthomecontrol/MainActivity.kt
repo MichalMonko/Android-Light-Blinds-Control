@@ -224,7 +224,6 @@ class MainActivity : AppCompatActivity(), RequestReceiver {
                 }
             }
         }
-        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onError(requestType: RequestType, error: ErrorType) {
@@ -254,6 +253,7 @@ class MainActivity : AppCompatActivity(), RequestReceiver {
         applyButton.isEnabled = enabled
         if (enabled != manualControl) {
             manualControl = enabled
+            sendPostRequest()
         }
         Log.d(TAG, "enableManualControl ended")
     }

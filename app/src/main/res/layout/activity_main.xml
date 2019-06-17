@@ -19,7 +19,7 @@
             app:layout_constraintEnd_toStartOf="@+id/ShutterUpText"
             app:layout_constraintStart_toEndOf="@+id/shutterDownText" android:layout_marginStart="8dp"/>
     <TextView
-            android:text="Off"
+            android:text="ON"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/manualControlOffText"
@@ -204,7 +204,7 @@
             app:layout_constraintTop_toBottomOf="@+id/shutterPositionText" android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/guideline5"/>
     <TextView
-            android:text="On"
+            android:text="OFF"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/manualOnText"
